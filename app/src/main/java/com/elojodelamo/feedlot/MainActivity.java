@@ -1,5 +1,6 @@
 package com.elojodelamo.feedlot;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,7 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        HomeFragment.OnFragmentInteractionListener,
+        IthFragment.OnFragmentInteractionListener,
+        TagFragment.OnFragmentInteractionListener,
+        CategoryFragment.OnFragmentInteractionListener,
+        ObservationFragment.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,21 +29,17 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        //getSupportFragmentManager().beginTransaction().replace(R.id.content, new HomeFragment()).commit();
+
     }
 
     @Override
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -79,21 +80,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, new HomeFragment()).commit();
+        } else if (id == R.id.nav_ith) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, new IthFragment()).commit();
+        } else if (id == R.id.nav_tags) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, new TagFragment()).commit();
+        } else if (id == R.id.nav_categories) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, new CategoryFragment()).commit();
+        } else if (id == R.id.nav_observations) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, new ObservationFragment()).commit();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
