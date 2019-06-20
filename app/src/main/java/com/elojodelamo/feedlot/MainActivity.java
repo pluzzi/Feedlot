@@ -1,5 +1,6 @@
 package com.elojodelamo.feedlot;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -90,6 +91,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_observations) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content, new ObservationFragment()).commit();
         }
+//        else if (id == R.id.nav_test){
+//            Intent i = new Intent(MainActivity.this,TestActivity.class);
+//            startActivity(i);
+//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

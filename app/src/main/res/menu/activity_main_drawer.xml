@@ -24,6 +24,10 @@
             android:id="@+id/nav_observations"
             android:icon="@drawable/ic_menu_observation"
             android:title="@string/menu_observations" />
+        <!--<item-->
+            <!--android:id="@+id/nav_test"-->
+            <!--android:icon="@android:drawable/alert_light_frame"-->
+            <!--android:title="@string/menu_test" />-->
     </group>
 
 
