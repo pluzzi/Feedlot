@@ -1,47 +1,32 @@
 package com.elojodelamo.feedlot;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.StrictMode;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -184,6 +169,25 @@ public class TagFragment extends Fragment {
 
         getTags();
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
+                adb.setTitle("Delete");
+                adb.setMessage("Seguro que desea borrar el tag?");
+                adb.setNegativeButton("Cancelar", null);
+                adb.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String code = listView.getItemAtPosition(position).toString();
+                        deleteTag(code);
+                    }
+                });
+                adb.show();
+
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -210,6 +214,13 @@ public class TagFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        try {
+            if(btSocket!=null){
+                btSocket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -271,6 +282,7 @@ public class TagFragment extends Fragment {
                                         showToast(data);
                                         readTxt.setText("Tag Readed: "+data);
                                         // DO THE MAGIC
+                                        createTag(data);
                                     }
                                 });
                             }else {
@@ -308,8 +320,9 @@ public class TagFragment extends Fragment {
                     List<String> arr = new ArrayList<String>();
 
                     for(Rfid rfid : result){
-                        arr.add(rfid.getRfid());
+                        arr.add(rfid.getId()+", "+rfid.getRfid());
                     }
+
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arr);
 
                     listView.setAdapter(arrayAdapter);
@@ -321,6 +334,63 @@ public class TagFragment extends Fragment {
 
             }
         });
+
+    }
+
+    private void  createTag(String code){
+        Rfid rfid = new Rfid(code.replaceAll("[^a-zA-Z0-9]", ""));
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://93.188.167.93:1026/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RfidAPI rfidAPI = retrofit.create(RfidAPI.class);
+
+        Call<Rfid> call = rfidAPI.createRfid(rfid);
+
+        call.enqueue(new Callback<Rfid>() {
+            @Override
+            public void onResponse(Call<Rfid> call, Response<Rfid> response) {
+                if(response.isSuccessful()){
+                    getTags();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Rfid> call, Throwable throwable) {
+
+            }
+        });
+
+    }
+
+    private void  deleteTag(String code){
+        int id = Integer.parseInt(code.split(",")[0].trim());
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://93.188.167.93:1026/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RfidAPI rfidAPI = retrofit.create(RfidAPI.class);
+
+        Call<Void> call = rfidAPI.deleteRfid(id);
+
+        call.enqueue(new Callback<Void>() {
+             @Override
+             public void onResponse(Call<Void> call, Response<Void> response) {
+                 if(response.isSuccessful()){
+                     getTags();
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<Void> call, Throwable throwable) {
+
+             }
+         }
+        );
 
     }
 

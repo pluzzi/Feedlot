@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ObservationFragment"/>
+    tools:context=".ObservationFragment">
+
+
+    <ImageView
+        android:id="@+id/bluetoothStatus"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/bluetooth"
+        android:src="@drawable/ic_action_on" />
+
+    <Button
+        android:id="@+id/newBtn"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toEndOf="@+id/bluetoothStatus"
+        android:background="@drawable/ic_add" />
+
+    <TextView
+        android:id="@+id/readTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bluetoothStatus"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/readTxt">
+
+    </ListView>
+
+</RelativeLayout>

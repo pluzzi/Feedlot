@@ -3,10 +3,14 @@ package com.elojodelamo.feedlot;
 import com.google.gson.annotations.SerializedName;
 
 public class Rfid {
-    private int id;
+    private Integer id;
     private String rfid;
 
-    public int getId() {
+    public Rfid(String rfid) {
+        this.rfid = rfid;
+    }
+
+    public Integer getId() {
         return id;
     }
 
