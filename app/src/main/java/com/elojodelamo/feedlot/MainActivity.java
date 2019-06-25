@@ -86,9 +86,10 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().replace(R.id.content, new IthFragment()).commit();
         } else if (id == R.id.nav_tags) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content, new TagFragment()).commit();
-        } else if (id == R.id.nav_categories) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content, new CategoryFragment()).commit();
-        } else if (id == R.id.nav_observations) {
+        }
+//        else if (id == R.id.nav_categories) {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content, new CategoryFragment()).commit();
+         else if (id == R.id.nav_observations) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content, new ObservationFragment()).commit();
         }
 //        else if (id == R.id.nav_test){

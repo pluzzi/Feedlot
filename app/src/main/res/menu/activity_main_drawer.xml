@@ -16,10 +16,10 @@
             android:id="@+id/nav_tags"
             android:icon="@drawable/ic_menu_tag"
             android:title="@string/menu_tags" />
-        <item
-            android:id="@+id/nav_categories"
-            android:icon="@drawable/ic_menu_category"
-            android:title="@string/menu_categories" />
+        <!--<item-->
+            <!--android:id="@+id/nav_categories"-->
+            <!--android:icon="@drawable/ic_menu_category"-->
+            <!--android:title="@string/menu_categories" />-->
         <item
             android:id="@+id/nav_observations"
             android:icon="@drawable/ic_menu_observation"
